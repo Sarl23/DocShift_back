@@ -1,0 +1,47 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Firebase credentials
+config/firebase.json
+src/firebase.json
+
+
+# Environment variables
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Swagger auto-generated files
+swagger-output.json
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Debugging
+.vscode/
+.idea/
+
+# Local development environments
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Optional: coverage directory for testing frameworks
+coverage/
+
+# Optional: build output
+dist/
+build/
