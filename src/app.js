@@ -14,6 +14,5 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
-// app.use(require("./routes/index"));
 
 module.exports = app;
