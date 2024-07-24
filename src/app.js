@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const userRoutes = require('../src/routes/index')
+const userRoutes = require('../src/routes/index.js')
 const {swaggerUi, specs } = require('./swagger');
 
 
