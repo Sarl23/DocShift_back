@@ -153,12 +153,16 @@
  *         description: The user was not found
  */
 const {Router} = require('express');
-const {db} = require('../firebase');
+const { getDb } = require('../firebase.js');
 
 const router = Router();
 
 router.get('/users', async (req, res) => {
     try {
+        const db = await getDb();
+        if (!db) {
+            throw new Error('Firestore has not been initialized');
+        }
         const querySnapshot = await db.collection('users').get();
         const users = querySnapshot.docs.map(doc => doc.data());
         res.json(users);
@@ -171,6 +175,10 @@ router.get('/users', async (req, res) => {
 // Obtener un usuario por ID
 router.get('/users/:id', async (req, res) => {
     try {
+        const db = await getDb();
+        if (!db) {
+            throw new Error('Firestore has not been initialized');
+        }
         const doc = await db.collection('users').doc(req.params.id).get();
         if (!doc.exists) {
             return res.status(404).send('User not found');
@@ -185,6 +193,10 @@ router.get('/users/:id', async (req, res) => {
 // Crear un nuevo usuario
 router.post('/users', async (req, res) => {
     try {
+        const db = await getDb();
+        if (!db) {
+            throw new Error('Firestore has not been initialized');
+        }
         const newUser = req.body;
         const docRef = await db.collection('users').add(newUser);
         res.status(201).json({ id: docRef.id, ...newUser });
@@ -197,6 +209,10 @@ router.post('/users', async (req, res) => {
 // Actualizar un usuario existente
 router.put('/users/:id', async (req, res) => {
     try {
+        const db = await getDb();
+        if (!db) {
+            throw new Error('Firestore has not been initialized');
+        }
         const updatedUser = req.body;
         await db.collection('users').doc(req.params.id).set(updatedUser, { merge: true });
         res.json({ id: req.params.id, ...updatedUser });
@@ -209,6 +225,10 @@ router.put('/users/:id', async (req, res) => {
 // Eliminar un usuario
 router.delete('/users/:id', async (req, res) => {
     try {
+        const db = await getDb();
+        if (!db) {
+            throw new Error('Firestore has not been initialized');
+        }
         await db.collection('users').doc(req.params.id).delete();
         res.status(204).send();
     } catch (error) {
