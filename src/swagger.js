@@ -15,7 +15,7 @@ const options = {
             },
         ],
     },
-    apis: ['./routes/index.js'], // Ruta
+    apis: ['src/routes/index.js'], // Root
 };
 
 const specs = swaggerJsDoc(options);
