@@ -12,6 +12,10 @@ const options = {
         servers: [
             {
                 url: 'http://localhost:3000/api',
+                description: 'Development server'
+            },{
+                url: 'https://doc-shift-back.vercel.app/api',
+                description: 'Production server'
             },
         ],
     },
