@@ -1,9 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
-const path = require('path');
 const userRoutes = require('../src/routes/index.js')
 const {swaggerUi, specs } = require('./swagger');
-
+const path = require('path');
 
 const app = express();
 
