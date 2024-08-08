@@ -8,9 +8,6 @@
  *         - name
  *         - email
  *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the user
  *         name:
  *           type: string
  *           description: The name of the user
@@ -183,7 +180,24 @@ router.get('/users/:id', async (req, res) => {
         if (!doc.exists) {
             return res.status(404).send('User not found');
         }
-        res.json({ id: doc.id, ...doc.data() });
+
+        const userData = doc.data();
+        const userTypeDoc = await userData.userType.get();
+        if(!userTypeDoc.exists){
+            return res.status(404).send('User type not found');
+        }
+        const hospitalData = await userData.hospital.get();
+        if(!hospitalData.exists){
+            return res.status(404).send('Hospital type not found');
+        }
+
+        const { userType, hospital,...userWithoutRefKey } = userData;
+        res.json({ 
+            id: doc.id, 
+            ...userWithoutRefKey,
+            userTypeId: userTypeDoc.id,
+            hospitalId: hospitalData.id,
+        });
     } catch (error) {
         console.error('Error fetching user:', error);
         res.status(500).send('Internal Server Error');
