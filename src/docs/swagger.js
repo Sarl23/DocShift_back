@@ -7,6 +7,8 @@
  *       required:
  *         - name
  *         - email
+ *         - hospitalId
+ *         - userType
  *       properties:
  *         name:
  *           type: string
@@ -14,6 +16,12 @@
  *         email:
  *           type: string
  *           description: The email of the user
+ *         hospitalId:
+ *           type: string
+ *           description: The id of the hospital
+ *         userType:
+ *           type: string
+ *           description: The userType
  *       example:
  *         id: d5fE_asz
  *         name: John Doe
