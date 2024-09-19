@@ -7,7 +7,19 @@ const getAllUsers = async (req, res) => {
             throw new Error('Firestore has not been initialized');
         }
         const querySnapshot = await db.collection('users').get();
-        const users = querySnapshot.docs.map(doc => doc.data());
+        const users = await Promise.all(querySnapshot.docs.map( async doc => {
+            const userData = doc.data();
+            const hospitalId = userData.hospital ? userData.hospital.id : null;
+            const userType = userData.userType ?  userData.userType.id : null;
+
+            return {
+                userId: doc.id,
+                name: userData.name,
+                email: userData.email,
+                hospitalId,
+                userType,
+            }
+        }));
         res.json(users);
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -92,7 +104,7 @@ const deleteUser = async (req, res) => {
             throw new Error('Firestore has not been initialized');
         }
         await db.collection('users').doc(req.params.id).delete();
-        res.status(204).send();
+        res.status(204).send('User deleted successfully');
     } catch (error) {
         console.error('Error deleting user:', error);
         res.status(500).send('Internal Server Error');
