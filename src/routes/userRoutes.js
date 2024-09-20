@@ -25,7 +25,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get('/users',getAllUsers);
+router.get('/company/:companyId/users',getAllUsers);
 
 /**
  * @swagger
@@ -50,7 +50,7 @@ router.get('/users',getAllUsers);
  *       404:
  *         description: The user was not found
  */
-router.get('/users/:id', getUserById);
+router.get('/company/:companyId/users/:userId', getUserById);
 
 /**
  * @swagger
@@ -74,7 +74,7 @@ router.get('/users/:id', getUserById);
  *       500:
  *         description: Some server error
  */
-router.post('/users', postCreateUser);
+router.post('/company/:companyId/users', postCreateUser);
 
 /**
  * @swagger
@@ -107,7 +107,7 @@ router.post('/users', postCreateUser);
  *       500:
  *         description: Some error happened
  */
-router.put('/users/:id',putUpdateUser );
+router.put('company/:companyId/users/:userId',putUpdateUser );
 
 /**
  * @swagger
@@ -128,6 +128,6 @@ router.put('/users/:id',putUpdateUser );
  *       404:
  *         description: The user was not found
  */
-router.delete('/users/:id',deleteUser);
+router.delete('company/:companyId/users/:userId',deleteUser);
 
 module.exports = router;
