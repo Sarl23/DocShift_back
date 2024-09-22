@@ -44,14 +44,12 @@ const getCompanyById = async (req, res) => {
 
 //Create company
 const postCreateCompany = async (req, res) => {
-    console.log('Company created');
     try {
         const db = await getDb();
         if (!db) {
             throw new error('Firestore has not bee initialized');
         }
         const newCompany = req.body;
-        console.log('Company created', newCompany);
         const docRef = await db.collection('companies').add(newCompany);
         res.status(201).json({ id: docRef.id, ...newCompany });
     } catch (error) {
