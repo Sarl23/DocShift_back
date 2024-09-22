@@ -2,13 +2,13 @@ const { getDb } = require('../firebase.js');
 
 const getAllUsers = async (req, res) => {
     try {
-        const {companyId} = req.params;
+        const { companyId } = req.params;
         const db = await getDb();
         if (!db) {
             throw new Error('Firestore has not been initialized');
         }
         const querySnapshot = await db.collection('companies').doc(companyId).collection('users').get();
-        const users = await Promise.all(querySnapshot.docs.map( async doc => {
+        const users = await Promise.all(querySnapshot.docs.map(async doc => {
             const userData = doc.data();
             return {
                 userId: doc.id,
@@ -27,7 +27,7 @@ const getAllUsers = async (req, res) => {
 // Get user by Id
 const getUserById = async (req, res) => {
     try {
-        const {companyId, userId} = req.params;
+        const { companyId, userId } = req.params;
         const db = await getDb();
         if (!db) {
             throw new Error('Firestore has not been initialized');
@@ -38,8 +38,8 @@ const getUserById = async (req, res) => {
         }
 
         const userData = doc.data();
-        res.json({ 
-            id: doc.id, 
+        res.json({
+            id: doc.id,
             ...userData,
         });
     } catch (error) {
@@ -49,9 +49,9 @@ const getUserById = async (req, res) => {
 };
 
 // Create a new user
-const postCreateUser= async (req, res) => {
+const postCreateUser = async (req, res) => {
     try {
-        const {companyId} = req.params;
+        const { companyId } = req.params;
         const db = await getDb();
         if (!db) {
             throw new Error('Firestore has not been initialized');
@@ -66,9 +66,9 @@ const postCreateUser= async (req, res) => {
 };
 
 // Update a user for id
-const putUpdateUser= async (req, res) => {
+const putUpdateUser = async (req, res) => {
     try {
-        const {companyId} = req.params;
+        const { companyId } = req.params;
         const db = await getDb();
         if (!db) {
             throw new Error('Firestore has not been initialized');
@@ -85,7 +85,7 @@ const putUpdateUser= async (req, res) => {
 // Delete a user
 const deleteUser = async (req, res) => {
     try {
-        const {companyId, userId} = req.params;
+        const { companyId, userId } = req.params;
         const db = await getDb();
         if (!db) {
             throw new Error('Firestore has not been initialized');
