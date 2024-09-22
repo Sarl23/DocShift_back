@@ -1,4 +1,5 @@
 const { getDb } = require('../firebase');
+const { Timestamp } = require('firebase-admin/firestore');
 
 const getAllShiftType = async (req, res) =>{
     try{
@@ -22,7 +23,7 @@ const getAllShiftType = async (req, res) =>{
     }
 };
 
-const getShiftTypeById = async (res, req) =>{
+const getShiftTypeById = async (req, res) =>{
     try{
         const {companyId, shiftTypeId} = req.params;
         const db =  await getDb();
@@ -40,18 +41,18 @@ const getShiftTypeById = async (res, req) =>{
     }
 };
 
-const postCreateShift = async( res, req)=>{
+const postCreateShift = async( req, res)=>{
     try{
         const { companyId } = req.params;
         const db = await getDb();
         if(!db){
             throw new Error('FireStore has no been initialized');
         }
-        const { startTime, endTime, ...rest } = req.body;
+        const { start_time, end_time, ...rest } = req.body;
         const newShiftType = {
             ...rest,
-            startTime: startTime ? Timestamp.fromDate(new Date(startTime)) : null,
-            endTime: endTime ? Timestamp.fromDate(new Date(endTime)) : null,
+            start_time: start_time ? Timestamp.fromDate(new Date(start_time)) : null,
+            end_time: end_time ? Timestamp.fromDate(new Date(end_time)) : null,
         };
         const docRef =  await db.collection('companies').doc(companyId).collection('shift_types').add(newShiftType);
         res.status(201).json({id: docRef.id, ...newShiftType});
@@ -61,7 +62,7 @@ const postCreateShift = async( res, req)=>{
     }
 };
 
-const deleteShiftType = async (res, req) =>{
+const deleteShiftType = async (req, res) =>{
     try{
         const {companyId, shiftTypeId}= req.params;
         const db = await getDb();
@@ -77,7 +78,7 @@ const deleteShiftType = async (res, req) =>{
 
 };
 
-const updateShiftType = async (res, req) =>{
+const updateShiftType = async (req, res) =>{
     try{
         const { companyId } = req.params;
         const db = await getDb();
