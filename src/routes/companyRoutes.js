@@ -1,5 +1,5 @@
-const {Router} = require('express');
-const { 
+const { Router } = require('express');
+const {
     getAllCompanies,
     getCompanyById,
     postCreateCompany,
