@@ -34,7 +34,7 @@ const getShiftTypeById = async (req, res) =>{
         if(!shiftTypeDoc.exists){
             return res.status(404).send('ShiftType no found');
         }
-        res.json({id: shiftTypeDoc, ...shiftTypeDoc.data()});
+        res.json({id: shiftTypeDoc.id, ...shiftTypeDoc.data()});
     }catch(error){
         console.error('Error fetching shiftType', error);
         res.status(500).send('Internal server error');
@@ -72,7 +72,7 @@ const deleteShiftType = async (req, res) =>{
         await db.collection('companies').doc(companyId).collection('shift_types').doc(shiftTypeId).delete();
         res.status(204).send();
     }catch(error){
-        console.error('Error creating shiftType', error);
+        console.error('Error delete shiftType', error);
         res.status(500).send('Internal server error');
     }
 
@@ -95,7 +95,8 @@ const updateShiftType = async (req, res) =>{
         res.status(201).json({id: docRef.id, ...newShiftType});
 
     }catch(error){
-        console.error('Error update shiftType', )
+        console.error('Error update shiftType', error)
+        res.status(500).send('Internal server error');
     }
 }
 
