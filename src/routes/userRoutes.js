@@ -1,10 +1,10 @@
-const {Router} = require('express');
+const { Router } = require('express');
 const {
-    getAllUsers, 
-    getUserById, 
+    getAllUsers,
+    getUserById,
     postCreateUser,
     putUpdateUser,
-    deleteUser
+    deleteUser,
 } = require('../controllers/userController.js');
 
 const router = Router();
@@ -25,7 +25,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get('/company/:companyId/users',getAllUsers);
+router.get('/company/:companyId/users', getAllUsers);
 
 /**
  * @swagger
@@ -107,7 +107,8 @@ router.post('/company/:companyId/users', postCreateUser);
  *       500:
  *         description: Some error happened
  */
-router.put('company/:companyId/users/:userId',putUpdateUser );
+router.put('/company/:companyId/users/:userId', putUpdateUser);
+// router.put('company/:companyId/user_state/:userId', putUpdateState);
 
 /**
  * @swagger
@@ -128,6 +129,6 @@ router.put('company/:companyId/users/:userId',putUpdateUser );
  *       404:
  *         description: The user was not found
  */
-router.delete('company/:companyId/users/:userId',deleteUser);
+router.delete('/company/:companyId/users/:userId', deleteUser);
 
 module.exports = router;
