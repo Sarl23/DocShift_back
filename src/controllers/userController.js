@@ -68,7 +68,7 @@ const postCreateUser = async (req, res) => {
 // Update a user for id
 const putUpdateUser = async (req, res) => {
     try {
-        const { companyId } = req.params;
+        const { companyId, userId } = req.params;
         const db = await getDb();
         if (!db) {
             throw new Error('Firestore has not been initialized');
@@ -98,10 +98,27 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const putUpdateState = async (req, res) => {
+    try{
+        const {userId, companyId } = req.params;
+        const db = await getDb();
+        if(!db){
+            throw new Error('Firestore has not been initialized');
+        }
+        const updateState = req.body;
+        await db.collection('companies').doc(companyId).collection('users').doc(userId).set(updateState, {merge: true});
+        res.status(200).send('User updated successfully');
+    }catch{
+        console.error('Error updating user:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}; 
+
 module.exports = {
     getAllUsers,
     getUserById,
     postCreateUser,
     putUpdateUser,
     deleteUser,
+    putUpdateState,
 };
