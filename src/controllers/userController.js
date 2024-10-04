@@ -34,9 +34,14 @@ const getUserById = async (req, res) => {
         }
         const doc = await db.collection('companies').doc(companyId).collection('users').doc(userId).get();
         if (!doc.exists) {
-            return res.status(404).send('User not found');
-        }
-
+            return res.status(400).send({
+                "success": true,
+                "error": {
+                    "code": 400,
+                    "message": "El usuario que buscas no existe",
+                }
+            });
+        };
         const userData = doc.data();
         res.json({
             id: doc.id,
@@ -97,22 +102,6 @@ const deleteUser = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-
-const putUpdateState = async (req, res) => {
-    try{
-        const {userId, companyId } = req.params;
-        const db = await getDb();
-        if(!db){
-            throw new Error('Firestore has not been initialized');
-        }
-        const updateState = req.body;
-        await db.collection('companies').doc(companyId).collection('users').doc(userId).set(updateState, {merge: true});
-        res.status(200).send('User updated successfully');
-    }catch{
-        console.error('Error updating user:', error);
-        res.status(500).send('Internal Server Error');
-    }
-}; 
 
 module.exports = {
     getAllUsers,

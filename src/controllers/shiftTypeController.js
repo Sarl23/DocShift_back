@@ -32,7 +32,13 @@ const getShiftTypeById = async (req, res) =>{
         }
         const shiftTypeDoc = await db.collection('companies').doc(companyId).collection('shift_types').doc(shiftTypeId).get();
         if(!shiftTypeDoc.exists){
-            return res.status(404).send('ShiftType no found');
+            return res.status(400).send({
+                "success": true,
+                "error": {
+                    "code": 400,
+                    "message": "La compañia que buscas no existe en el momento",
+                }
+            });
         }
         res.json({id: shiftTypeDoc.id, ...shiftTypeDoc.data()});
     }catch(error){

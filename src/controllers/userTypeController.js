@@ -51,7 +51,13 @@ const getUserTypeById = async (req, res) => {
         }
         const userTypeDoc = await db.collection('companies').doc(companyId).collection('user_type').doc(userTypeId).get();
         if (!userTypeDoc.exists) {
-            return res.status(404).send('User type not found');
+            return res.status(400).send({
+                "success": true,
+                "error": {
+                    "code": 400,
+                    "message": "El tipo de usuario que buscas no esta registrado",
+                }
+            });
         }
         res.json({ id: userTypeDoc.id, ...userTypeDoc.data() });
     } catch (error) {

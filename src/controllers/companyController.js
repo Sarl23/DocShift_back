@@ -28,8 +28,14 @@ const getCompanyById = async (req, res) => {
         }
         const doc = await db.collection('companies').doc(req.params.id).get();
         if (!doc.exists) {
-            return res.status(404).send('Company not found');
-        }
+            return res.status(400).send({
+                "success": true,
+                "error": {
+                    "code": 400,
+                    "message": "La compañia que buscas no existe en el momento",
+                }
+            });
+        };
         const company = doc.data();
         res.json({
             id: company.id,

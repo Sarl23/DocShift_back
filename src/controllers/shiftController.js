@@ -47,7 +47,13 @@ const getShiftById = async (req, res) =>{
         }
         const shiftDoc =  await db.collection('companies').doc(companyId).collection('shift').doc(shiftId).get();
         if(!shiftDoc.exists){
-            return res.status(404).send('Shift not found');
+            return res.status(400).send({
+                "success": true,
+                "error": {
+                    "code": 400,
+                    "message": "Por el momento el turno que buscas no se encuentra",
+                }
+            });
         }
         res.json({id: shiftDoc.id, ...shiftDoc.data()})
     }catch(error){
