@@ -109,5 +109,4 @@ module.exports = {
     postCreateUser,
     putUpdateUser,
     deleteUser,
-    putUpdateState,
 };
