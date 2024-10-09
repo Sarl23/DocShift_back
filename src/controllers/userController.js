@@ -29,10 +29,10 @@ const getUserById = async (req, res) => {
     try {
         const { companyId, userId } = req.params;
         const db = await getDb();
-        if (!db) {
-            throw new Error('Firestore has not been initialized');
-        }
-        const doc = await db.collection('companies').doc(companyId).collection('users').doc(userId).get();
+        if (!db) throw new Error('Firestore has not been initialized');
+
+        const userDocRef = await db.collection('companies').doc(companyId).collection('users').doc(userId);
+        const doc = await userDocRef.get();
         if (!doc.exists) {
             return res.status(400).send({
                 "success": true,
@@ -43,10 +43,13 @@ const getUserById = async (req, res) => {
             });
         };
         const {user_type_id,...userData} = doc.data();
-        const userTypeDoc = await db.collection('companies').doc(companyId).collection('user_type').doc(user_type_id).get();
+        const userTypePromise = user_type_id 
+        ? db.collection('companies').doc(companyId).collection('user_type').doc(user_type_id).get()
+        : Promise.resolve(null);
+        const [userTypeDoc] = await Promise.all([userTypePromise]);
         res.json({
             id: doc.id,
-            userTypeInf: userTypeDoc.data() ?? {},
+            userTypeInf: userTypeDoc?.data() ?? {},
             ...userData,
         });
     } catch (error) {
