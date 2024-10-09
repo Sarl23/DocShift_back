@@ -42,9 +42,11 @@ const getUserById = async (req, res) => {
                 }
             });
         };
-        const userData = doc.data();
+        const {user_type_id,...userData} = doc.data();
+        const userTypeDoc = await db.collection('companies').doc(companyId).collection('user_type').doc(user_type_id).get();
         res.json({
             id: doc.id,
+            userTypeInf: userTypeDoc.data() ?? {},
             ...userData,
         });
     } catch (error) {
@@ -61,9 +63,17 @@ const postCreateUser = async (req, res) => {
         if (!db) {
             throw new Error('Firestore has not been initialized');
         }
-        const newUser = req.body;
-        const docRef = await db.collection('companies').doc(companyId).collection('users').add(newUser);
-        res.status(201).json({ id: docRef.id, ...newUser });
+        const {userId, ...userData} = req.body;
+        if(!userId){
+            res.status(400).json({error: 'El id del usuario es requerido'});
+        }
+        const userRef = await db.collection('companies').doc(companyId).collection('users').doc(userId);
+        const docSnapshot = await userRef.get();
+        if (docSnapshot.exists) {
+            return res.status(409).json({ error: 'El usuario ya existe' });
+        }
+        await userRef.set({ id: userId, ...userData });
+        res.status(201).json({ id: userId, ...userData });
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(500).send('Internal Server Error');
